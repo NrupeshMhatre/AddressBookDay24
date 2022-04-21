@@ -27,7 +27,6 @@ public class Contact {
 
 	public String getFirstName() {
 		return firstName;
-
 	}
 
 	public void setFirstName(String firstName) {

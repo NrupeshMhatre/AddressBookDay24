@@ -309,4 +309,17 @@ public class MainClass {
 		}
 
 	}
+	public void viewCityAndPersonAsWellAsStateAndPesron() {
+		List<Contact> contactsList = new ArrayList<>();
+		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
+			AddressBook addressBook = set.getValue();
+			contactsList = addressBook.getContacts();
+			System.out.println("Person Name and His/her city");
+			contactsList.stream()
+					.forEachOrdered(con -> System.out.println(con.getFirstName() + "     " + con.getCity()));
+			System.out.println("Person Name and His/her State");
+			contactsList.stream()
+					.forEachOrdered(con -> System.out.println(con.getFirstName() + "     " + con.getState()));
+		}
+	}
 }

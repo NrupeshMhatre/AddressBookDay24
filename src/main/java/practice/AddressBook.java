@@ -8,7 +8,6 @@ public class AddressBook {
 	public List<Contact> getContacts() {
 		return contacts;
 	}
-
 	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
 	}
