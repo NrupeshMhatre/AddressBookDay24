@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class MainClass {
 	private static Scanner sc = new Scanner(System.in);
@@ -309,7 +310,7 @@ public class MainClass {
 		}
 
 	}
-	public void viewCityAndPersonAsWellAsStateAndPesron() {
+	public void viewCityAndPerson() {
 		List<Contact> contactsList = new ArrayList<>();
 		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
 			AddressBook addressBook = set.getValue();
@@ -321,5 +322,20 @@ public class MainClass {
 			contactsList.stream()
 					.forEachOrdered(con -> System.out.println(con.getFirstName() + "     " + con.getState()));
 		}
+	}
+	public void numberOfContacts() {
+		List<Contact> contactsList = new ArrayList<>();
+		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
+			AddressBook addressBook = set.getValue();
+			contactsList = addressBook.getContacts();
+			Map<Object, Integer> list = contactsList.parallelStream()
+					.collect(Collectors.toConcurrentMap(w -> w.getCity(), w -> 1, Integer::sum));
+			Map<Object, Integer> state = contactsList.parallelStream()
+					.collect(Collectors.toConcurrentMap(w -> w.getState(), w -> 1, Integer::sum));
+			System.out.println("City Name" + list.keySet() + ":  Number of persons in City " + list.values()
+					+ "        State Name" + state.keySet() + ":  Number of persons in State " + state.values());
+
+		}
+
 	}
 }
