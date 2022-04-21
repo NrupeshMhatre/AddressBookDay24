@@ -17,15 +17,15 @@ public class MainClass {
 	public static void main(String[] args) {
 		System.out.println("Welcome to Address Book Program\n");
 
-		addressbooks.addContacts();
+		addressbooks.contactsAdd();
 
 	}
 
-	public void addContacts() {
+	public void contactsAdd() {
 
 		System.out.println("Enter your choice");
 		System.out.println(
-				"1 : Add new contact    2 : Edit contact  3 : Delete contact  4: Add Multiple Contacts 5: Display Contacts");
+				"1 : Add new contact    2 : Edit contact  3 : Delete contact  4: Add Multiple Contacts 5: Display Contacts 6: Search Person");
 		int choice = sc.nextInt();
 		switch (choice) {
 		case 1:
@@ -62,7 +62,7 @@ public class MainClass {
 			contacts.add(contact);
 			addressbookValue.setContacts(contacts);
 			addressBookSystem.put(addresBookname, addressbookValue);
-			addressbooks.addContacts();
+			addressbooks.contactsAdd();
 
 			break;
 		case 2:
@@ -95,9 +95,9 @@ public class MainClass {
 
 			System.out.println("Enter the email");
 			String editEmail = sc.next();
-			addressbooks.editContact(findAddressBook, nameToEdit, editFirstName, editLastName, editAddress, editCity,
+			addressbooks.contactEdit(findAddressBook, nameToEdit, editFirstName, editLastName, editAddress, editCity,
 					editState, editZip, editPhoneNumber, editEmail);
-			addressbooks.addContacts();
+			addressbooks.contactsAdd();
 
 		case 3:
 			System.out.println("Enter Your Address Book name ");
@@ -106,16 +106,26 @@ public class MainClass {
 			String deletename = sc.next();
 
 			addressbooks.deleteContactDetails(deletename, yourBookname);
-			addressbooks.addContacts();
+			addressbooks.contactsAdd();
 			break;
 		case 4:
 
 			addressbooks.addMultipleContacts();
-			addressbooks.addContacts();
+			addressbooks.contactsAdd();
 			break;
 		case 5:
 			addressbooks.displayContacts(addressBookSystem);
-			addressbooks.addContacts();
+			addressbooks.contactsAdd();
+			break;
+
+		case 6:
+			System.out.println("Search the person in perticular city or state ");
+			System.out.println("Please Enter the City Name ");
+			String cityname = sc.next();
+			System.out.println("Please Enter the State Name ");
+			String statename = sc.next();
+			addressbooks.searchPerson(cityname, statename);
+			addressbooks.contactsAdd();
 			break;
 		default:
 			System.out.println("Please Enter correct choice");
@@ -123,7 +133,7 @@ public class MainClass {
 
 	}
 
-	public void editContact(String findAddressBook, String name, String editFirstName, String editLastName,
+	public void contactEdit(String findAddressBook, String name, String editFirstName, String editLastName,
 			String editAddress, String editCity, String editState, int editZip, long editPhoneNumber,
 			String editEmail) {
 
@@ -242,7 +252,7 @@ public class MainClass {
 			break;
 		case 2:
 			addressbooks.displayContacts(addressBookSystem);
-			addressbooks.addContacts();
+			addressbooks.contactsAdd();
 			break;
 		default:
 			System.out.println("Please Enter correct choice");
@@ -250,7 +260,7 @@ public class MainClass {
 		}
 
 		addressbooks.displayContacts(addressBookSystem);
-		addressbooks.addContacts();
+		addressbooks.contactsAdd();
 
 	}
 
@@ -278,5 +288,25 @@ public class MainClass {
 			Addressvalues.setContacts(contactsLis);
 			addressBookSystem.put(addressBookName, Addressvalues);
 		}
+	}
+
+	public void searchPerson(String cityname, String statename) {
+		List<Contact> contactsList = new ArrayList<>();
+		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
+			AddressBook addressBook = set.getValue();
+			contactsList = addressBook.getContacts();
+			boolean isPresent = contactsList.stream()
+					.anyMatch(con -> con.getCity().equals(cityname) || con.getState().equals(statename));
+			if (isPresent) {
+				contactsList.stream().filter(s -> s.getCity().equals(cityname) || s.getState().equals(statename))
+						.sorted().forEachOrdered(conts -> System.out.println("User name :" + conts.getFirstName()));
+
+			} else {
+
+				System.out.println("This peson not present in this city or state");
+			}
+
+		}
+
 	}
 }

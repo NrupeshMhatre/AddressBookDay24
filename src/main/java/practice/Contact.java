@@ -23,8 +23,7 @@ public class Contact {
 		this.state = state;
 		this.zip = zip;
 		this.phoneNumber = phoneNumber;
-		this.email = email;
-	}
+		this.email = email;}
 
 	public String getFirstName() {
 		return firstName;
