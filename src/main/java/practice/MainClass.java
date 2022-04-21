@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,8 @@ public class MainClass {
 
 		System.out.println("Enter your choice");
 		System.out.println(
-				"1 : Add new contact    2 : Edit contact  3 : Delete contact  4: Add Multiple Contacts 5: Display Contacts 6: Search Person");
+				"1 : Add new contact    2 : Edit contact  3 : Delete contact  4: Add Multiple Contacts 5: Display Contacts 6: Search Person 7: Person with City and State"
+						+ " 8: Count person by city and state 9: Sorted Person's by alphabetically in Address Book");
 		int choice = sc.nextInt();
 		switch (choice) {
 		case 1:
@@ -96,7 +98,7 @@ public class MainClass {
 
 			System.out.println("Enter the email");
 			String editEmail = sc.next();
-			addressbooks.contactEdit(findAddressBook, nameToEdit, editFirstName, editLastName, editAddress, editCity,
+			addressbooks.contactsEdit(findAddressBook, nameToEdit, editFirstName, editLastName, editAddress, editCity,
 					editState, editZip, editPhoneNumber, editEmail);
 			addressbooks.contactsAdd();
 
@@ -106,12 +108,12 @@ public class MainClass {
 			System.out.println("Enter the person Name");
 			String deletename = sc.next();
 
-			addressbooks.deleteContactDetails(deletename, yourBookname);
+			addressbooks.deleteContactInfo(deletename, yourBookname);
 			addressbooks.contactsAdd();
 			break;
 		case 4:
 
-			addressbooks.addMultipleContacts();
+			addressbooks.multipleContactsAdd();
 			addressbooks.contactsAdd();
 			break;
 		case 5:
@@ -128,13 +130,25 @@ public class MainClass {
 			addressbooks.searchPerson(cityname, statename);
 			addressbooks.contactsAdd();
 			break;
+		case 7:
+			viewCityAndPerson();
+			addressbooks.contactsAdd();
+			break;
+		case 8:
+			addressbooks.numberOfContacts();
+			addressbooks.contactsAdd();
+			break;
+		case 9:
+			addressbooks.addressBookByName();
+			addressbooks.contactsAdd();
+			break;
 		default:
 			System.out.println("Please Enter correct choice");
 		}
 
 	}
 
-	public void contactEdit(String findAddressBook, String name, String editFirstName, String editLastName,
+	public void contactsEdit(String findAddressBook, String name, String editFirstName, String editLastName,
 			String editAddress, String editCity, String editState, int editZip, long editPhoneNumber,
 			String editEmail) {
 
@@ -190,7 +204,7 @@ public class MainClass {
 
 	}
 
-	public void deleteContactDetails(String name, String yourBookname) {
+	public void deleteContactInfo(String name, String yourBookname) {
 
 		AddressBook addressbook = new AddressBook();
 
@@ -209,7 +223,7 @@ public class MainClass {
 		System.out.println("Contact deleted Successfully");
 	}
 
-	public void addMultipleContacts() {
+	public void multipleContactsAdd() {
 
 		List<Contact> contacts = new ArrayList<>();
 		System.out.println("Enter Your Address Book name ");
@@ -249,7 +263,7 @@ public class MainClass {
 		switch (choice) {
 
 		case 1:
-			addressbooks.addMultipleContacts();
+			addressbooks.multipleContactsAdd();
 			break;
 		case 2:
 			addressbooks.displayContacts(addressBookSystem);
@@ -308,8 +322,8 @@ public class MainClass {
 			}
 
 		}
-
 	}
+
 	public void viewCityAndPerson() {
 		List<Contact> contactsList = new ArrayList<>();
 		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
@@ -322,7 +336,9 @@ public class MainClass {
 			contactsList.stream()
 					.forEachOrdered(con -> System.out.println(con.getFirstName() + "     " + con.getState()));
 		}
+
 	}
+
 	public void numberOfContacts() {
 		List<Contact> contactsList = new ArrayList<>();
 		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
@@ -335,6 +351,20 @@ public class MainClass {
 			System.out.println("City Name" + list.keySet() + ":  Number of persons in City " + list.values()
 					+ "        State Name" + state.keySet() + ":  Number of persons in State " + state.values());
 
+		}
+
+	}
+
+	public void addressBookByName() {
+		List<Contact> contactsList = new ArrayList<>();
+		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
+			AddressBook addressBook = set.getValue();
+			contactsList = addressBook.getContacts();
+			System.out.println("Sorted Person's by alphabetically in Address Book");
+			List<Contact> sortedList = contactsList.stream().sorted(Comparator.comparing(Contact::getFirstName))
+					.collect(Collectors.toList());
+
+			sortedList.forEach(con -> System.out.println(con.getFirstName()));
 		}
 
 	}
