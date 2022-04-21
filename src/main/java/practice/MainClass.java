@@ -28,7 +28,7 @@ public class MainClass {
 		System.out.println("Enter your choice");
 		System.out.println(
 				"1 : Add new contact    2 : Edit contact  3 : Delete contact  4: Add Multiple Contacts 5: Display Contacts 6: Search Person 7: Person with City and State"
-						+ " 8: Count person by city and state 9: Sorted Person's by alphabetically in Address Book");
+						+ " 8: Count person by city and state 9: Sorted Person's by alphabetically in Address Book 10: Sorted Person's by alphabetically by City State And Zip Code");
 		int choice = sc.nextInt();
 		switch (choice) {
 		case 1:
@@ -98,7 +98,7 @@ public class MainClass {
 
 			System.out.println("Enter the email");
 			String editEmail = sc.next();
-			addressbooks.contactsEdit(findAddressBook, nameToEdit, editFirstName, editLastName, editAddress, editCity,
+			addressbooks.editContact(findAddressBook, nameToEdit, editFirstName, editLastName, editAddress, editCity,
 					editState, editZip, editPhoneNumber, editEmail);
 			addressbooks.contactsAdd();
 
@@ -142,13 +142,18 @@ public class MainClass {
 			addressbooks.addressBookByName();
 			addressbooks.contactsAdd();
 			break;
+		case 10:
+			addressbooks.addressBookByCitySateAndZip();
+			addressbooks.contactsAdd();
+
+			break;
 		default:
 			System.out.println("Please Enter correct choice");
 		}
 
 	}
 
-	public void contactsEdit(String findAddressBook, String name, String editFirstName, String editLastName,
+	public void editContact(String findAddressBook, String name, String editFirstName, String editLastName,
 			String editAddress, String editCity, String editState, int editZip, long editPhoneNumber,
 			String editEmail) {
 
@@ -363,8 +368,30 @@ public class MainClass {
 			System.out.println("Sorted Person's by alphabetically in Address Book");
 			List<Contact> sortedList = contactsList.stream().sorted(Comparator.comparing(Contact::getFirstName))
 					.collect(Collectors.toList());
-
 			sortedList.forEach(con -> System.out.println(con.getFirstName()));
+		}
+
+	}
+
+	public void addressBookByCitySateAndZip() {
+		List<Contact> contactsList = new ArrayList<>();
+		for (Map.Entry<String, AddressBook> set : addressBookSystem.entrySet()) {
+			AddressBook addressBook = set.getValue();
+			contactsList = addressBook.getContacts();
+			System.out.println("Sorted Person's by alphabetically in Address Book");
+			System.out.println("Sorted Person's by City Name");
+			List<Contact> sortedListCity = contactsList.stream().sorted(Comparator.comparing(Contact::getCity))
+					.collect(Collectors.toList());
+			sortedListCity.forEach(con -> System.out.println(con.getCity()));
+			System.out.println("Sorted Person's by State Name");
+			List<Contact> sortedListState = contactsList.stream().sorted(Comparator.comparing(Contact::getCity))
+					.collect(Collectors.toList());
+			sortedListState.forEach(con -> System.out.println(con.getState()));
+			System.out.println("Sorted Person's by Zip Code");
+			List<Contact> sortedListZip = contactsList.stream().sorted(Comparator.comparing(Contact::getZip))
+					.collect(Collectors.toList());
+			sortedListZip.forEach(con -> System.out.println(con.getZip()));
+
 		}
 
 	}
